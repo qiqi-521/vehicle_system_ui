@@ -39,6 +39,12 @@ const routes = [
         meta: { title: '车辆详情' }
       },
       {
+        path: 'rent/:vehicleId',
+        name: 'RentOrder',
+        component: () => import('@/views/user/RentOrder.vue'),
+        meta: { title: '立即租赁', requiresUserAuth: true }
+      },
+      {
         path: 'orders',
         name: 'UserOrders',
         component: () => import('@/views/user/MyOrders.vue'),
@@ -49,6 +55,24 @@ const routes = [
         name: 'OrderDetail',
         component: () => import('@/views/user/OrderDetail.vue'),
         meta: { title: '订单详情', requiresUserAuth: true }
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/views/user/Profile.vue'),
+        meta: { title: '个人中心', requiresUserAuth: true }
+      },
+      {
+        path: 'guide',
+        name: 'Guide',
+        component: () => import('@/views/user/Guide.vue'),
+        meta: { title: '租赁须知' }
+      },
+      {
+        path: 'contact',
+        name: 'Contact',
+        component: () => import('@/views/user/Contact.vue'),
+        meta: { title: '联系我们' }
       }
     ]
   },

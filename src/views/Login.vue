@@ -5,19 +5,74 @@
       <div class="decoration-content">
         <div class="logo-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M8 17a4 4 0 0 1 8 0M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
-            <path d="M5.5 21a8.5 8.5 0 1 1 13 0"/>
+            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+            <circle cx="7" cy="17" r="2" />
+            <path d="M9 17h6" />
+            <circle cx="17" cy="17" r="2" />
           </svg>
         </div>
         <h1>汽车租赁系统</h1>
         <p>便捷租车，畅行无忧</p>
+
+        <div class="features">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <span>安全可靠</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
+              </svg>
+            </div>
+            <span>便捷高效</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <span>专业服务</span>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- 右侧登录表单 -->
     <div class="login-form-wrapper">
       <div class="login-box">
-        <h2>欢迎登录</h2>
+        <div class="form-header">
+          <h2>欢迎登录</h2>
+          <p>请选择登录身份并输入账号信息</p>
+        </div>
+
+        <!-- 身份切换 -->
+        <div class="role-switch">
+          <div
+            :class="['role-option', { active: loginType === 'user' }]"
+            @click="loginType = 'user'"
+          >
+            <el-icon class="role-icon"><User /></el-icon>
+            <span class="role-label">用户登录</span>
+            <span class="role-desc">租赁车辆、管理订单</span>
+          </div>
+          <div
+            :class="['role-option', { active: loginType === 'admin' }]"
+            @click="loginType = 'admin'"
+          >
+            <el-icon class="role-icon"><Setting /></el-icon>
+            <span class="role-label">管理员登录</span>
+            <span class="role-desc">管理车辆、订单系统</span>
+          </div>
+        </div>
 
         <el-form :model="form" :rules="rules" ref="formRef" @keyup.enter="handleLogin">
           <el-form-item prop="username">
@@ -45,24 +100,6 @@
             </el-input>
           </el-form-item>
 
-          <!-- 身份切换按钮 -->
-          <div class="role-switch">
-            <el-button
-              :class="['role-btn', { active: loginType === 'user' }]"
-              @click="loginType = 'user'"
-            >
-              <el-icon><User /></el-icon>
-              用户
-            </el-button>
-            <el-button
-              :class="['role-btn', { active: loginType === 'admin' }]"
-              @click="loginType = 'admin'"
-            >
-              <el-icon><Setting /></el-icon>
-              管理员
-            </el-button>
-          </div>
-
           <el-form-item>
             <el-button
               type="primary"
@@ -70,14 +107,16 @@
               @click="handleLogin"
               class="login-btn"
             >
-              登 录
+              <span v-if="!loading">登 录</span>
+              <span v-else>登录中...</span>
             </el-button>
           </el-form-item>
         </el-form>
 
         <!-- 用户端显示注册链接 -->
-        <div class="register-link" v-if="loginType === 'user'">
-          还没有账号？<router-link to="/register">立即注册</router-link>
+        <div class="form-footer" v-if="loginType === 'user'">
+          <span>还没有账号？</span>
+          <router-link to="/register">立即注册</router-link>
         </div>
       </div>
     </div>
@@ -144,14 +183,13 @@ async function handleLogin() {
 .login-container {
   min-height: 100vh;
   display: flex;
-  background: #ECFEFF;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f8fafc;
 }
 
 /* 左侧装饰区域 */
 .login-decoration {
   flex: 1;
-  background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+  background: linear-gradient(135deg, #1e3a5f 0%, #0d2137 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,40 +200,42 @@ async function handleLogin() {
 .login-decoration::before {
   content: '';
   position: absolute;
-  width: 400px;
-  height: 400px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
   border-radius: 50%;
-  top: -100px;
-  left: -100px;
+  top: -150px;
+  left: -150px;
 }
 
 .login-decoration::after {
   content: '';
   position: absolute;
-  width: 300px;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.05);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
   border-radius: 50%;
-  bottom: -50px;
-  right: -50px;
+  bottom: -100px;
+  right: -100px;
 }
 
 .decoration-content {
   text-align: center;
   color: #fff;
   z-index: 1;
+  padding: 40px;
 }
 
 .logo-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 28px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
 }
 
 .logo-icon svg {
@@ -205,19 +245,55 @@ async function handleLogin() {
 }
 
 .decoration-content h1 {
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 36px;
+  font-weight: 700;
   margin-bottom: 12px;
+  letter-spacing: 2px;
 }
 
-.decoration-content p {
+.decoration-content > p {
   font-size: 16px;
-  opacity: 0.9;
+  opacity: 0.8;
+  margin-bottom: 48px;
+}
+
+.features {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #60a5fa;
+}
+
+.feature-item span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* 右侧登录表单 */
 .login-form-wrapper {
-  width: 480px;
+  width: 520px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -227,73 +303,109 @@ async function handleLogin() {
 
 .login-box {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
 }
 
-.login-box h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #164E63;
+.form-header {
   margin-bottom: 32px;
 }
 
+.form-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.form-header p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* 身份切换 */
+.role-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.role-option {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.role-option:hover {
+  border-color: #93c5fd;
+  background: #f0f9ff;
+}
+
+.role-option.active {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.role-icon {
+  font-size: 24px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.role-option.active .role-icon {
+  color: #3b82f6;
+}
+
+.role-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.role-desc {
+  display: block;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.role-option.active .role-desc {
+  color: #6b7280;
+}
+
+/* 输入框样式 */
 .login-box :deep(.el-input__wrapper) {
   padding: 4px 16px;
   border-radius: 10px;
-  box-shadow: 0 0 0 1px #E2E8F0;
+  box-shadow: 0 0 0 1px #e5e7eb;
   transition: all 0.2s;
 }
 
 .login-box :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #0891B2;
+  box-shadow: 0 0 0 1px #3b82f6;
 }
 
 .login-box :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px rgba(8, 145, 178, 0.2), 0 0 0 1px #0891B2;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 0 0 1px #3b82f6;
 }
 
 .login-box :deep(.el-input__inner) {
   height: 44px;
-  color: #164E63;
+  color: #1f2937;
 }
 
 .login-box :deep(.el-input__inner::placeholder) {
-  color: #94A3B8;
+  color: #9ca3af;
 }
 
-/* 身份切换按钮 */
-.role-switch {
-  display: flex;
-  gap: 12px;
-  margin: 20px 0;
-}
-
-.role-btn {
-  flex: 1;
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid #E2E8F0;
-  background: #F8FAFC;
-  color: #64748B;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
-.role-btn:hover {
-  border-color: #0891B2;
-  color: #0891B2;
-}
-
-.role-btn.active {
-  background: #0891B2;
-  border-color: #0891B2;
-  color: #fff;
+.login-box :deep(.el-form-item) {
+  margin-bottom: 20px;
 }
 
 /* 登录按钮 */
@@ -302,32 +414,40 @@ async function handleLogin() {
   height: 48px;
   border-radius: 10px;
   font-size: 16px;
-  font-weight: 500;
-  background: #22C55E;
-  border-color: #22C55E;
-  transition: all 0.2s;
+  font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
 }
 
 .login-btn:hover {
-  background: #16A34A;
-  border-color: #16A34A;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
-/* 注册链接 */
-.register-link {
+.login-btn:active {
+  transform: translateY(0);
+}
+
+/* 底部链接 */
+.form-footer {
   text-align: center;
-  margin-top: 20px;
-  color: #64748B;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #f3f4f6;
+  color: #6b7280;
   font-size: 14px;
 }
 
-.register-link a {
-  color: #0891B2;
+.form-footer a {
+  color: #3b82f6;
   text-decoration: none;
   font-weight: 500;
+  margin-left: 4px;
 }
 
-.register-link a:hover {
+.form-footer a:hover {
   text-decoration: underline;
 }
 
