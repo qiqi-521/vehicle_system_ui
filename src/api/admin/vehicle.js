@@ -33,10 +33,6 @@ export function deleteVehicle(id) {
 // 上传车辆图片
 export function uploadVehicleImage(file) {
   const formData = new FormData()
-  formData.append('file', file)
-  return request.post('/admin/vehicles/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
+  formData.append('files', file)
+  return request.post('/admin/vehicles/upload', formData)
 }

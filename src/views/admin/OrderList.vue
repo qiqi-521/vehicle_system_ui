@@ -51,12 +51,12 @@
               订单状态
             </label>
             <el-select v-model="searchForm.status" placeholder="全部状态" clearable>
-              <el-option label="待支付" value="PENDING" />
-              <el-option label="已支付" value="PAID" />
-              <el-option label="使用中" value="IN_USE" />
-              <el-option label="已完成" value="COMPLETED" />
-              <el-option label="已取消" value="CANCELLED" />
-              <el-option label="已退款" value="REFUNDED" />
+              <el-option label="待支付" value="pending" />
+              <el-option label="已支付" value="paid" />
+              <el-option label="使用中" value="in_use" />
+              <el-option label="已完成" value="completed" />
+              <el-option label="已取消" value="cancelled" />
+              <el-option label="已退款" value="refunded" />
             </el-select>
           </div>
         </div>
@@ -169,9 +169,9 @@
                 circle
                 size="small"
                 class="action-btn"
-                :class="{ disabled: row.status === 'CANCELLED' || row.status === 'REFUNDED' }"
+                :class="{ disabled: row.status === 'cancelled' || row.status === 'refunded' }"
                 @click="handleStatus(row)"
-                :disabled="row.status === 'CANCELLED' || row.status === 'REFUNDED'"
+                :disabled="row.status === 'cancelled' || row.status === 'refunded'"
               >
                 <el-icon><Setting /></el-icon>
               </el-button>
@@ -235,12 +235,12 @@
         <div class="status-row">
           <span class="status-label">修改为</span>
           <el-select v-model="newStatus" class="status-select">
-            <el-option label="待支付" value="PENDING" />
-            <el-option label="已支付" value="PAID" />
-            <el-option label="使用中" value="IN_USE" />
-            <el-option label="已完成" value="COMPLETED" />
-            <el-option label="已取消" value="CANCELLED" />
-            <el-option label="已退款" value="REFUNDED" />
+            <el-option label="待支付" value="pending" />
+            <el-option label="已支付" value="paid" />
+            <el-option label="使用中" value="in_use" />
+            <el-option label="已完成" value="completed" />
+            <el-option label="已取消" value="cancelled" />
+            <el-option label="已退款" value="refunded" />
           </el-select>
         </div>
       </div>
@@ -314,12 +314,12 @@ function tableRowClassName({ row, rowIndex }) {
 // 状态样式类
 function getStatusClass(status) {
   const map = {
-    'PENDING': 'pending',
-    'PAID': 'paid',
-    'IN_USE': 'in-use',
-    'COMPLETED': 'completed',
-    'CANCELLED': 'cancelled',
-    'REFUNDED': 'refunded'
+    'pending': 'pending',
+    'paid': 'paid',
+    'in_use': 'in-use',
+    'completed': 'completed',
+    'cancelled': 'cancelled',
+    'refunded': 'refunded'
   }
   return map[status] || ''
 }
@@ -327,12 +327,12 @@ function getStatusClass(status) {
 // 状态文本
 function getStatusText(status) {
   const map = {
-    'PENDING': '待支付',
-    'PAID': '已支付',
-    'IN_USE': '使用中',
-    'COMPLETED': '已完成',
-    'CANCELLED': '已取消',
-    'REFUNDED': '已退款'
+    'pending': '待支付',
+    'paid': '已支付',
+    'in_use': '使用中',
+    'completed': '已完成',
+    'cancelled': '已取消',
+    'refunded': '已退款'
   }
   return map[status] || status
 }

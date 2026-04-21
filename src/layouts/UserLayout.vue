@@ -52,6 +52,17 @@
             </span>
             <span class="nav-text">租赁须知</span>
           </router-link>
+          <router-link to="/recruit" class="nav-item" :class="{ active: activeMenu === '/recruit' }">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </span>
+            <span class="nav-text">人才招聘</span>
+          </router-link>
           <router-link to="/contact" class="nav-item" :class="{ active: activeMenu === '/contact' }">
             <span class="nav-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -86,7 +97,7 @@
                     </div>
                     <div class="dropdown-user-info">
                       <span class="dropdown-name">{{ userStore.userInfo?.name || userStore.userInfo?.username }}</span>
-                      <span class="dropdown-email">{{ userStore.userInfo?.email || 'user@example.com' }}</span>
+                      <span class="dropdown-email" v-if="userStore.userInfo?.email">{{ userStore.userInfo.email }}</span>
                     </div>
                   </div>
                   <div class="dropdown-divider"></div>
@@ -103,6 +114,12 @@
                       <polyline points="14 2 14 8 20 8" />
                     </svg>
                     <span>我的订单</span>
+                  </div>
+                  <div class="dropdown-item" @click="router.push('/feedback')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    <span>留言反馈</span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="dropdown-item logout" @click="handleCommand('logout')">
@@ -155,6 +172,7 @@
         </div>
         <div class="footer-links">
           <router-link to="/guide">租赁须知</router-link>
+          <router-link to="/recruit">人才招聘</router-link>
           <router-link to="/contact">联系我们</router-link>
         </div>
       </div>
@@ -178,7 +196,8 @@ const activeMenu = computed(() => {
   if (path === '/') return '/'
   if (path === '/vehicles' || path.startsWith('/vehicle/')) return '/vehicles'
   if (path === '/guide') return '/guide'
-  if (path === '/profile' || path === '/orders' || path.startsWith('/order/')) return '/profile'
+  if (path === '/recruit') return '/recruit'
+  if (path === '/profile' || path === '/orders' || path === '/feedback' || path.startsWith('/order/')) return '/profile'
   if (path === '/contact') return '/contact'
   return ''
 })

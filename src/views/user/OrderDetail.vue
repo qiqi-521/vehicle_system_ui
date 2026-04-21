@@ -54,7 +54,7 @@
             <div class="card-body">
               <div class="vehicle-info">
                 <div class="vehicle-image">
-                  <img :src="defaultImage" alt="车辆图片" />
+                  <img :src="vehicleImage" alt="车辆图片" />
                 </div>
                 <div class="vehicle-details">
                   <h4 class="vehicle-name">{{ order.vehicleBrand }} {{ order.vehicleModel }}</h4>
@@ -135,7 +135,13 @@ const paying = ref(false)
 const canceling = ref(false)
 const order = ref(null)
 
-const defaultImage = 'https://via.placeholder.com/200x120?text=Vehicle'
+// 获取车辆图片
+const vehicleImage = computed(() => {
+  if (order.value?.vehicleImage) {
+    return order.value.vehicleImage
+  }
+  return 'https://via.placeholder.com/200x120?text=Vehicle'
+})
 
 const statusMap = {
   pending: { text: '待支付', class: 'pending' },
@@ -187,6 +193,11 @@ async function fetchOrderDetail() {
 
 function formatTime(time) {
   if (!time) return '-'
+  // 如果已经是 yyyy-MM-dd HH:mm:ss 格式，直接返回
+  if (time.includes(' ')) {
+    return time.substring(0, 16)
+  }
+  // ISO 格式处理
   return time.replace('T', ' ').substring(0, 16)
 }
 

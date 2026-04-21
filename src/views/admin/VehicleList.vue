@@ -72,14 +72,14 @@
               状态
             </label>
             <el-select v-model="searchForm.status" placeholder="全部状态" clearable>
-              <el-option label="可用" value="AVAILABLE" />
-              <el-option label="维修中" value="MAINTENANCE" />
-              <el-option label="不可用" value="UNAVAILABLE" />
+              <el-option label="可用" value="available" />
+              <el-option label="维修中" value="maintenance" />
+              <el-option label="不可用" value="unavailable" />
             </el-select>
           </div>
         </div>
         <div class="search-actions">
-          <el-button type="primary" @click="fetchData">
+          <el-button type="primary" @click="handleSearch">
             <el-icon><Search /></el-icon>
             搜索
           </el-button>
@@ -246,9 +246,9 @@
         <div class="status-row">
           <span class="status-label">修改为</span>
           <el-select v-model="newStatus" class="status-select">
-            <el-option label="可用" value="AVAILABLE" />
-            <el-option label="维修中" value="MAINTENANCE" />
-            <el-option label="不可用" value="UNAVAILABLE" />
+            <el-option label="可用" value="available" />
+            <el-option label="维修中" value="maintenance" />
+            <el-option label="不可用" value="unavailable" />
           </el-select>
         </div>
       </div>
@@ -297,7 +297,7 @@ async function fetchData() {
   loading.value = true
   try {
     const res = await vehicleApi.getVehicleList({
-      page: pagination.page - 1,
+      page: pagination.page,
       size: pagination.size,
       brand: searchForm.brand || undefined,
       model: searchForm.model || undefined,
@@ -323,6 +323,12 @@ function resetSearch() {
   fetchData()
 }
 
+// 搜索（重置到第一页）
+function handleSearch() {
+  pagination.page = 1
+  fetchData()
+}
+
 // 表格行样式
 function tableRowClassName({ row, rowIndex }) {
   return rowIndex % 2 === 0 ? '' : 'even-row'
@@ -331,9 +337,9 @@ function tableRowClassName({ row, rowIndex }) {
 // 状态样式类
 function getStatusClass(status) {
   const map = {
-    'AVAILABLE': 'available',
-    'MAINTENANCE': 'maintenance',
-    'UNAVAILABLE': 'unavailable'
+    'available': 'available',
+    'maintenance': 'maintenance',
+    'unavailable': 'unavailable'
   }
   return map[status] || ''
 }
@@ -341,9 +347,9 @@ function getStatusClass(status) {
 // 状态文本
 function getStatusText(status) {
   const map = {
-    'AVAILABLE': '可用',
-    'MAINTENANCE': '维修中',
-    'UNAVAILABLE': '不可用'
+    'available': '可用',
+    'maintenance': '维修中',
+    'unavailable': '不可用'
   }
   return map[status] || status
 }

@@ -149,9 +149,9 @@ const isEdit = computed(() => !!route.params.id)
 
 // 状态选项
 const statusOptions = [
-  { value: 'AVAILABLE', label: '可用', desc: '车辆可正常出租', class: 'available', icon: CircleCheck },
-  { value: 'MAINTENANCE', label: '维修中', desc: '车辆正在维护保养', class: 'maintenance', icon: Tools },
-  { value: 'UNAVAILABLE', label: '不可用', desc: '车辆暂停出租', class: 'unavailable', icon: CircleClose }
+  { value: 'available', label: '可用', desc: '车辆可正常出租', class: 'available', icon: CircleCheck },
+  { value: 'maintenance', label: '维修中', desc: '车辆正在维护保养', class: 'maintenance', icon: Tools },
+  { value: 'unavailable', label: '不可用', desc: '车辆暂停出租', class: 'unavailable', icon: CircleClose }
 ]
 
 // 表单
@@ -162,7 +162,7 @@ const form = reactive({
   model: '',
   licensePlate: '',
   price: 100,
-  status: 'AVAILABLE',
+  status: 'available',
   description: '',
   images: []
 })
@@ -215,9 +215,13 @@ async function handleSubmit() {
     const uploadedImages = []
     for (const file of fileList.value) {
       if (file.raw) {
-        // 新上传的图片
+        // 新上传的图片，后端返回的是数组
         const res = await vehicleApi.uploadVehicleImage(file.raw)
-        uploadedImages.push(res)
+        if (Array.isArray(res)) {
+          uploadedImages.push(...res)
+        } else {
+          uploadedImages.push(res)
+        }
       } else if (file.url) {
         // 已有的图片
         uploadedImages.push(file.url)
@@ -274,8 +278,8 @@ onMounted(() => {
 /* 页面头部 */
 .page-header {
   background: #fff;
-  border-radius: 12px;
-  padding: 16px 24px;
+  border-radius: 16px;
+  padding: 24px 28px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 

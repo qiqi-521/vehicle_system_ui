@@ -20,6 +20,8 @@ export const useUserStore = defineStore('user', () => {
     const res = await authApi.login({ username, password })
     token.value = res.token
     localStorage.setItem('userToken', res.token)
+    // 登录后获取完整用户信息
+    await fetchUserInfo()
     return res
   }
 

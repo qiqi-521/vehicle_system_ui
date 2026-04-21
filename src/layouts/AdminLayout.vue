@@ -29,6 +29,18 @@
           <el-icon><Document /></el-icon>
           <template #title>订单管理</template>
         </el-menu-item>
+        <el-menu-item index="/admin/banners">
+          <el-icon><Picture /></el-icon>
+          <template #title>轮播图管理</template>
+        </el-menu-item>
+        <el-menu-item index="/admin/users">
+          <el-icon><User /></el-icon>
+          <template #title>用户管理</template>
+        </el-menu-item>
+        <el-menu-item index="/admin/contacts">
+          <el-icon><ChatDotRound /></el-icon>
+          <template #title>留言管理</template>
+        </el-menu-item>
       </el-menu>
 
       <!-- 折叠按钮 -->
@@ -83,7 +95,7 @@
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Van, Document, Fold, Expand, ArrowDown, SwitchButton } from '@element-plus/icons-vue'
+import { Van, Document, Fold, Expand, ArrowDown, SwitchButton, Picture, User, ChatDotRound } from '@element-plus/icons-vue'
 import { useAdminStore } from '@/stores/admin'
 
 const router = useRouter()
@@ -101,6 +113,15 @@ const activeMenu = computed(() => {
   if (path.startsWith('/admin/orders')) {
     return '/admin/orders'
   }
+  if (path.startsWith('/admin/banners')) {
+    return '/admin/banners'
+  }
+  if (path.startsWith('/admin/users')) {
+    return '/admin/users'
+  }
+  if (path.startsWith('/admin/contacts')) {
+    return '/admin/contacts'
+  }
   return path
 })
 
@@ -108,7 +129,10 @@ const activeMenu = computed(() => {
 const pageTitle = computed(() => {
   const titleMap = {
     '/admin/vehicles': '车辆管理',
-    '/admin/orders': '订单管理'
+    '/admin/orders': '订单管理',
+    '/admin/banners': '轮播图管理',
+    '/admin/users': '用户管理',
+    '/admin/contacts': '留言管理'
   }
   return titleMap[activeMenu.value] || '管理后台'
 })

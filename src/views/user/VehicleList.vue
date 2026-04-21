@@ -75,7 +75,7 @@
           <span class="total">共 {{ total }} 辆可租车辆</span>
         </div>
 
-        <div v-loading="loading" class="vehicle-grid">
+        <div v-if="vehicles.length > 0" v-loading="loading" class="vehicle-grid">
           <div
             v-for="vehicle in vehicles"
             :key="vehicle.id"
@@ -107,8 +107,20 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <el-empty v-if="!loading && vehicles.length === 0" description="暂无可租车辆" />
+        <!-- 空状态 -->
+        <div v-if="!loading && vehicles.length === 0" class="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+              <circle cx="7" cy="17" r="2" />
+              <path d="M9 17h6" />
+              <circle cx="17" cy="17" r="2" />
+            </svg>
+          </div>
+          <h3>暂无可租车辆</h3>
+          <p>目前没有可租赁的车辆，请稍后再来看看</p>
         </div>
 
         <!-- 分页 -->
@@ -448,6 +460,46 @@ function goToDetail(id) {
 
 .vehicle-card:hover .action svg {
   transform: translateX(4px);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.empty-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #94a3b8;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
 }
 
 /* 分页 */

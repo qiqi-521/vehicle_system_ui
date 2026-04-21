@@ -236,6 +236,11 @@ async function fetchOrderStats() {
 
 function formatTime(time) {
   if (!time) return '-'
+  // 如果已经是 yyyy-MM-dd HH:mm:ss 格式，直接返回
+  if (time.includes(' ')) {
+    return time.substring(0, 16)
+  }
+  // ISO 格式处理
   return time.replace('T', ' ').substring(0, 16)
 }
 

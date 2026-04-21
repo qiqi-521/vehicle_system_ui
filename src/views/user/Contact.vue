@@ -45,7 +45,7 @@
           </div>
           <div class="card-content">
             <h3>公司地址</h3>
-            <p>北京市朝阳区建国路88号</p>
+            <p>河北科技大学新校区</p>
           </div>
         </div>
 
@@ -63,18 +63,9 @@
         </div>
       </div>
 
-      <!-- 地图区域（预留） -->
+      <!-- 地图区域 -->
       <div class="map-section">
-        <div class="map-placeholder">
-          <div class="placeholder-content">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <p>地图加载区域</p>
-            <span>高德地图 API 接入后显示</span>
-          </div>
-        </div>
+        <div id="map-container" class="map-container"></div>
       </div>
 
       <!-- 留言表单 -->
@@ -135,12 +126,13 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { submitContact } from '@/api/user/contact'
 
 const formRef = ref(null)
 const loading = ref(false)
+let mapInstance = null
 
 const form = reactive({
   name: '',
@@ -161,6 +153,61 @@ const rules = {
     { required: true, message: '请输入留言内容', trigger: 'blur' }
   ]
 }
+
+// 初始化地图
+function initMap() {
+  // 安全密钥配置
+  window._AMapSecurityConfig = {
+    securityJsCode: '9e4728f68f9036f552f903cdf6264efc' // 安全密钥
+  }
+
+  AMapLoader.load({
+    key: '1ea6cbed8c399fc1667b1ba2e8e4a5d2', // Key
+    version: '2.0',
+    plugins: ['AMap.Scale', 'AMap.Marker', 'AMap.InfoWindow']
+  }).then((AMap) => {
+    // 设置应用标识
+    AMap.getConfig().appname = 'amap-jsapi-skill'
+
+    // 创建地图实例
+    mapInstance = new AMap.Map('map-container', {
+      viewMode: '2D',
+      zoom: 15,
+      center: [114.521537, 37.978107] // 裕华区裕翔街26号
+    })
+
+    // 添加比例尺
+    mapInstance.addControl(new AMap.Scale())
+
+    // 添加标记点
+    const marker = new AMap.Marker({
+      position: [114.521537, 37.978107],
+      title: '公司地址'
+    })
+    mapInstance.add(marker)
+
+    // 添加信息窗体
+    const infoWindow = new AMap.InfoWindow({
+      content: '<div style="padding:10px;"><strong>租车公司</strong><br/>裕华区裕翔街26号</div>',
+      offset: new AMap.Pixel(0, -30)
+    })
+    infoWindow.open(mapInstance, [114.521537, 37.978107])
+  }).catch((e) => {
+    console.error('地图加载失败:', e)
+  })
+}
+
+onMounted(() => {
+  initMap()
+})
+
+onUnmounted(() => {
+  // 销毁地图实例
+  if (mapInstance) {
+    mapInstance.destroy()
+    mapInstance = null
+  }
+})
 
 async function handleSubmit() {
   const valid = await formRef.value.validate().catch(() => false)
@@ -286,36 +333,11 @@ async function handleSubmit() {
   margin-bottom: 48px;
 }
 
-.map-placeholder {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+.map-container {
+  width: 100%;
+  height: 400px;
   border-radius: 16px;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed #cbd5e1;
-}
-
-.placeholder-content {
-  text-align: center;
-  color: #94a3b8;
-}
-
-.placeholder-content svg {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 12px;
-}
-
-.placeholder-content p {
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0 0 4px 0;
-  color: #64748b;
-}
-
-.placeholder-content span {
-  font-size: 13px;
+  overflow: hidden;
 }
 
 /* 留言表单 */

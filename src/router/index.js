@@ -63,10 +63,22 @@ const routes = [
         meta: { title: '个人中心', requiresUserAuth: true }
       },
       {
+        path: 'feedback',
+        name: 'MyFeedback',
+        component: () => import('@/views/user/MyFeedback.vue'),
+        meta: { title: '留言反馈', requiresUserAuth: true }
+      },
+      {
         path: 'guide',
         name: 'Guide',
         component: () => import('@/views/user/Guide.vue'),
         meta: { title: '租赁须知' }
+      },
+      {
+        path: 'recruit',
+        name: 'Recruit',
+        component: () => import('@/views/user/Recruit.vue'),
+        meta: { title: '人才招聘' }
       },
       {
         path: 'contact',
@@ -109,6 +121,24 @@ const routes = [
         name: 'AdminOrders',
         component: () => import('@/views/admin/OrderList.vue'),
         meta: { title: '订单管理' }
+      },
+      {
+        path: 'banners',
+        name: 'AdminBanners',
+        component: () => import('@/views/admin/BannerManage.vue'),
+        meta: { title: '轮播图管理' }
+      },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('@/views/admin/UserManage.vue'),
+        meta: { title: '用户管理' }
+      },
+      {
+        path: 'contacts',
+        name: 'AdminContacts',
+        component: () => import('@/views/admin/ContactManage.vue'),
+        meta: { title: '留言管理' }
       }
     ]
   },
