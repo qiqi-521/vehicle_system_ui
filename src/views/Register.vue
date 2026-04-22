@@ -96,6 +96,7 @@ async function handleRegister() {
     await userStore.register({
       username: form.username,
       password: form.password,
+      confirmPassword: form.confirmPassword,
       name: form.name,
       phone: form.phone,
       email: form.email || undefined

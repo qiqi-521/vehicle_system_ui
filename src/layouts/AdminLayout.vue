@@ -41,6 +41,24 @@
           <el-icon><ChatDotRound /></el-icon>
           <template #title>留言管理</template>
         </el-menu-item>
+        <el-sub-menu index="/admin/statistics">
+          <template #title>
+            <el-icon><DataLine /></el-icon>
+            <span>统计分析</span>
+          </template>
+          <el-menu-item index="/admin/statistics">
+            <el-icon><TrendCharts /></el-icon>
+            <template #title>订单分析</template>
+          </el-menu-item>
+          <el-menu-item index="/admin/vehicle-statistics">
+            <el-icon><Van /></el-icon>
+            <template #title>车辆分析</template>
+          </el-menu-item>
+          <el-menu-item index="/admin/user-statistics">
+            <el-icon><User /></el-icon>
+            <template #title>用户分析</template>
+          </el-menu-item>
+        </el-sub-menu>
       </el-menu>
 
       <!-- 折叠按钮 -->
@@ -95,7 +113,7 @@
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Van, Document, Fold, Expand, ArrowDown, SwitchButton, Picture, User, ChatDotRound } from '@element-plus/icons-vue'
+import { Van, Document, Fold, Expand, ArrowDown, SwitchButton, Picture, User, ChatDotRound, DataLine, TrendCharts } from '@element-plus/icons-vue'
 import { useAdminStore } from '@/stores/admin'
 
 const router = useRouter()
@@ -122,6 +140,15 @@ const activeMenu = computed(() => {
   if (path.startsWith('/admin/contacts')) {
     return '/admin/contacts'
   }
+  if (path === '/admin/statistics') {
+    return '/admin/statistics'
+  }
+  if (path === '/admin/vehicle-statistics') {
+    return '/admin/vehicle-statistics'
+  }
+  if (path === '/admin/user-statistics') {
+    return '/admin/user-statistics'
+  }
   return path
 })
 
@@ -132,7 +159,10 @@ const pageTitle = computed(() => {
     '/admin/orders': '订单管理',
     '/admin/banners': '轮播图管理',
     '/admin/users': '用户管理',
-    '/admin/contacts': '留言管理'
+    '/admin/contacts': '留言管理',
+    '/admin/statistics': '订单分析',
+    '/admin/vehicle-statistics': '车辆分析',
+    '/admin/user-statistics': '用户分析'
   }
   return titleMap[activeMenu.value] || '管理后台'
 })
@@ -246,6 +276,61 @@ async function handleCommand(command) {
 
 .sidebar-menu :deep(.el-menu-item .el-icon) {
   font-size: 18px;
+}
+
+/* 子菜单样式 */
+.sidebar-menu :deep(.el-sub-menu) {
+  margin: 4px 0;
+}
+
+.sidebar-menu :deep(.el-sub-menu__title) {
+  height: 48px;
+  line-height: 48px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu :deep(.el-sub-menu__title:hover) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.sidebar-menu :deep(.el-sub-menu__title .el-icon) {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar-menu :deep(.el-sub-menu__title:hover .el-icon) {
+  color: #fff;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu) {
+  background: transparent !important;
+  padding: 4px 0 4px 12px;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item) {
+  height: 40px;
+  line-height: 40px;
+  margin: 2px 0;
+  padding-left: 48px !important;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item:hover) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.sidebar-menu :deep(.el-sub-menu .el-menu-item.is-active) {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .collapse-toggle {

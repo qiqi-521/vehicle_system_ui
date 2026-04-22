@@ -139,6 +139,24 @@ const routes = [
         name: 'AdminContacts',
         component: () => import('@/views/admin/ContactManage.vue'),
         meta: { title: '留言管理' }
+      },
+      {
+        path: 'statistics',
+        name: 'AdminStatistics',
+        component: () => import('@/views/admin/Statistics.vue'),
+        meta: { title: '订单分析' }
+      },
+      {
+        path: 'vehicle-statistics',
+        name: 'AdminVehicleStatistics',
+        component: () => import('@/views/admin/VehicleStatistics.vue'),
+        meta: { title: '车辆分析' }
+      },
+      {
+        path: 'user-statistics',
+        name: 'AdminUserStatistics',
+        component: () => import('@/views/admin/UserStatistics.vue'),
+        meta: { title: '用户分析' }
       }
     ]
   },
